@@ -7,12 +7,11 @@ use App\Models\Destinations; // Import model Destinations
 use Illuminate\View\View; // Import return type View
 use Illuminate\Http\Request; // Import Http Request
 use Illuminate\Http\RedirectResponse; // Import return type RedirectResponse
-use Illuminate\Support\Facades\Storage; // Import Facades Storage
 
 class TransportsController extends Controller
 {
     /**
-     * index
+     * Display a listing of transports.
      *
      * @return View
      */
@@ -23,57 +22,51 @@ class TransportsController extends Controller
     }
 
     /**
-     * create
+     * Show the form for creating a new transport.
      *
      * @return View
      */
     public function create(): View
     {
-        // Ambil semua destinasi untuk dropdown
-        $destinations = Destinations::all();
+        $destinations = Destinations::all(); // Get all destinations for dropdown
         return view('transports.create', compact('destinations'));
     }
 
     /**
-     * store
+     * Store a newly created transport in storage.
      *
      * @param  Request $request
      * @return RedirectResponse
      */
     public function store(Request $request): RedirectResponse
     {
-        // Validasi form
         $request->validate([
             'nama_transport' => 'required|string|min:3|max:255',
-            'tipe_transport' => 'required|in:bis,travel,pesawat,kapal',
+            'tipe_transport' => 'required|string',
+            'biaya' => 'required|numeric',
             'destination_id' => 'required|exists:destinations,id',
         ]);
 
-        // Create transport
         Transports::create($request->all());
 
-        // Redirect to index
-        return redirect()->route('transports.index')->with(['success' => 'Data Transport Berhasil Disimpan!']);
+        return redirect()->route('transports.index')->with('success', 'Data Transport Berhasil Disimpan!');
     }
 
     /**
-     * edit
+     * Show the form for editing the specified transport.
      *
      * @param  string $id
      * @return View
      */
     public function edit(string $id): View
     {
-        // Ambil transport berdasarkan ID
-        $transport = Transports::findOrFail($id);
-
-        // Ambil semua destinasi untuk dropdown
-        $destinations = Destinations::all();
+        $transport = Transports::findOrFail($id); // Get transport by ID or fail
+        $destinations = Destinations::all(); // Get all destinations for dropdown
         return view('transports.edit', compact('transport', 'destinations'));
     }
 
     /**
-     * update
+     * Update the specified transport in storage.
      *
      * @param  Request $request
      * @param  string $id
@@ -81,38 +74,30 @@ class TransportsController extends Controller
      */
     public function update(Request $request, string $id): RedirectResponse
     {
-        // Validasi form
         $request->validate([
             'nama_transport' => 'required|string|min:3|max:255',
             'tipe_transport' => 'required|in:bis,travel,pesawat,kapal',
+            'biaya' => 'required|numeric',
             'destination_id' => 'required|exists:destinations,id',
         ]);
 
-        // Ambil transport berdasarkan ID
-        $transport = Transports::findOrFail($id);
+        $transport = Transports::findOrFail($id); // Get transport by ID or fail
+        $transport->update($request->all()); // Update transport
 
-        // Update transport
-        $transport->update($request->all());
-
-        // Redirect to index
-        return redirect()->route('transports.index')->with(['success' => 'Data Transport Berhasil Diubah!']);
+        return redirect()->route('transports.index')->with('success', 'Data Transport Berhasil Diubah!');
     }
 
     /**
-     * destroy
+     * Remove the specified transport from storage.
      *
      * @param  string $id
      * @return RedirectResponse
      */
     public function destroy(string $id): RedirectResponse
     {
-        // Ambil transport berdasarkan ID
-        $transport = Transports::findOrFail($id);
+        $transport = Transports::findOrFail($id); // Get transport by ID or fail
+        $transport->delete(); // Delete transport
 
-        // Hapus transport
-        $transport->delete();
-
-        // Redirect to index
-        return redirect()->route('transports.index')->with(['success' => 'Data Transport Berhasil Dihapus!']);
+        return redirect()->route('transports.index')->with('success', 'Data Transport Berhasil Dihapus!');
     }
 }

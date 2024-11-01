@@ -16,4 +16,13 @@ class Destinations extends Model // Ubah dari Destinations menjadi Destination
         'htm',
         'image',
     ];
+    public function transports()
+    {
+        return $this->hasMany(Transports::class);
+    }
+
+    public function hotels()
+    {
+        return $this->hasMany(Hotels::class);
+    }
 }

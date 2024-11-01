@@ -10,7 +10,7 @@ use App\Http\Controllers\PaketsController;
 Route::get('/', function () {
     return redirect()->route('pakets.index'); // Mengarahkan ke rute 'pakets.index'
 });
-Route::resource('destinations', DestinationsController::class);
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Rute yang aman
-
+    Route::resource('destinations', DestinationsController::class);
     Route::resource('transports', TransportsController::class);
     Route::resource('hotels', HotelsController::class);
     Route::resource('pakets', PaketsController::class);

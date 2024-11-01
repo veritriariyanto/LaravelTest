@@ -12,11 +12,10 @@ class DestinationsFactory extends Factory
     public function definition()
     {
         return [
-            'image' => 'default_image.jpg', // Anda bisa mengganti ini dengan logika upload file jika perlu
-            'nama_destinasi' => $this->faker->words(3, true), // Nama destinasi acak
-            'deskripsi' => $this->faker->sentence(10), // Deskripsi acak
-            'lokasi' => $this->faker->address, // Lokasi acak
-            'htm' => $this->faker->randomNumber(5), // Harga acak
+            'nama_destinasi' => $this->faker->city,
+            'deskripsi' => $this->faker->text,
+            'lokasi' => $this->faker->address,
+            'htm' => $this->faker->numberBetween(10000, 1000000),
         ];
     }
 }

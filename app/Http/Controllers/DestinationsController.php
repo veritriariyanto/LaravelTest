@@ -55,6 +55,7 @@ class DestinationsController extends Controller
         $request->validate([
             'image'         => 'required|image|mimes:jpeg,jpg,png|max:2048',
             'nama_destinasi' => 'required|string|min:3',
+            'deskripsi'     => 'required|string|min:10',
             'lokasi'        => 'required|string|max:255',
             'htm'           => 'required|numeric'
         ]);
@@ -67,6 +68,7 @@ class DestinationsController extends Controller
         Destinations::create([
             'image'         => $image->hashName(),
             'nama_destinasi' => $request->nama_destinasi,
+            'deskripsi'     => $request->deskripsi,
             'lokasi'        => $request->lokasi,
             'htm'           => $request->htm
         ]);
