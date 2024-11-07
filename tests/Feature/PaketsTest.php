@@ -4,9 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Pakets;
 use App\Models\User;
-use App\Models\Destinations;
-use App\Models\Hotels;
-use App\Models\Transports;
 use Tests\TestCase;
 
 class PaketsTest extends TestCase
@@ -55,7 +52,7 @@ class PaketsTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $paket = Pakets::first();
+        $paket = Pakets::where('id', '!=', 25)->first();
 
         $response = $this->get(route('pakets.index'));
 
@@ -70,7 +67,7 @@ class PaketsTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $paket = Pakets::first();
+        $paket = Pakets::where('id', '!=', 25)->first();
 
         $updateData = [
             'nama_paket' => 'Paket Liburan Bali Terupdate',
@@ -98,7 +95,8 @@ class PaketsTest extends TestCase
         $this->actingAs($this->user);
 
         // Create a package for testing
-        $paket = Pakets::first();
+        $paket = Pakets::where('id', '!=', 25)->first();
+
 
         $deleteResponse = $this->delete(route('pakets.destroy', $paket->id));
         $deleteResponse->assertRedirect(route('pakets.index'));

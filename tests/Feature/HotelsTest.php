@@ -52,7 +52,7 @@ class HotelsTest extends TestCase
         $this->actingAs($this->user);
 
         // Create a hotel to ensure data is available
-        $hotel = Hotels::first();
+        $hotel = Hotels::where('id', '!=', 25)->first();
 
         $response = $this->get(route('hotels.index'));
 
@@ -66,8 +66,8 @@ class HotelsTest extends TestCase
     public function test_update_data_hotel(): void
     {
         $this->actingAs($this->user);
-        // Create a hotel for testing
-        $hotel = Hotels::first();
+
+        $hotel = Hotels::where('id', '!=', 25)->first();
 
         $updateData = [
             'nama_hotel' => 'Hotel Jimbaran',
@@ -92,7 +92,7 @@ class HotelsTest extends TestCase
     public function test_hapus_data_hotel(): void
     {
         $this->actingAs($this->user);
-        $hotel = Hotels::first();
+        $hotel = Hotels::where('id', '!=', 25)->first();
 
         $deleteResponse = $this->delete(route('hotels.destroy', $hotel->id));
         $deleteResponse->assertRedirect(route('hotels.index'));

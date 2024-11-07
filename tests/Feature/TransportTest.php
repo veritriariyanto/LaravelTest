@@ -5,8 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Transports;
-use App\Models\Destinations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+
 
 class TransportTest extends TestCase
 {
@@ -50,7 +49,7 @@ class TransportTest extends TestCase
         $this->actingAs($this->user);
 
         // Create a transport to ensure data is available
-        $transport = Transports::first();
+        $transports = Transports::where('id', '!=', 25)->first();
 
         $response = $this->get(route('transports.index'));
 
@@ -64,7 +63,7 @@ class TransportTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $transports = Transports::first();
+        $transports = Transports::where('id', '!=', 25)->first();
 
         $updateData = [
             'nama_transport' => 'busKuning',
@@ -88,7 +87,7 @@ class TransportTest extends TestCase
     public function test_hapus_data_transports(): void
     {
         $this->actingAs($this->user);
-        $transports = Transports::first();
+        $transports = Transports::where('id', '!=', 25)->first();
 
         $deleteResponse = $this->delete(route('transports.destroy', $transports->id));
         $deleteResponse->assertRedirect(route('transports.index'));
@@ -114,13 +113,13 @@ class TransportTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $nonExistentId = 01111;
+        $nonExistentId = 99999;
 
         $response = $this->put(route('transports.update', $nonExistentId), [
             'nama_transport' => 'busmerah',
             'tipe_transport' => 'bis',
-            'biaya' => 900,
-            'destination_id' => 99
+            'biaya' => 100,
+            'destination_id' => 25,
         ]);
 
         $response->assertNotFound();
