@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\DestinationTest;
 
-use App\Models\Destinations;
+use App\Models\Destination;
 use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
@@ -69,8 +69,8 @@ class DestinationTest extends TestCase
     public function test_Update_data()
     {
         $this->actingAs($this->user);
-        // Ambil data destinasi 
-        $destination = Destinations::where('id', '!=', 25)->first();
+        // Ambil data destinasi
+        $destination = Destination::where('id', '!=', 25)->first();
         // Membuat file gambar palsu untuk update
         $newFile = UploadedFile::fake()->image('new_image.jpg');
 
@@ -100,7 +100,7 @@ class DestinationTest extends TestCase
     {
         $this->actingAs($this->user);
         // Ambil destinasi yang baru saja dibuat untuk diupdate
-        $destination = Destinations::where('id', '!=', 25)->first();
+        $destination = Destination::where('id', '!=', 25)->first();
         // Hapus destinasi
         $deleteResponse = $this->delete(route('destinations.destroy', $destination->id));
         // Verifikasi pengalihan setelah menghapus

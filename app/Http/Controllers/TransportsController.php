@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transports; // Import model Transport
-use App\Models\Destinations; // Import model Destinations
+use App\Models\Transport; // Import model Transport
+use App\Models\Destination; // Import model Destinations
 use Illuminate\View\View; // Import return type View
 use Illuminate\Http\Request; // Import Http Request
 use Illuminate\Http\RedirectResponse; // Import return type RedirectResponse
@@ -17,7 +17,7 @@ class TransportsController extends Controller
      */
     public function index(): View
     {
-        $transports = Transports::with('destinations')->latest()->paginate(10);
+        $transports = Transport::with('destinations')->latest()->paginate(10);
         return view('transports.index', compact('transports'));
     }
 
@@ -28,7 +28,7 @@ class TransportsController extends Controller
      */
     public function create(): View
     {
-        $destinations = Destinations::all(); // Get all destinations for dropdown
+        $destinations = Destination::all(); // Get all destinations for dropdown
         return view('transports.create', compact('destinations'));
     }
 
@@ -47,7 +47,7 @@ class TransportsController extends Controller
             'destination_id' => 'required|exists:destinations,id',
         ]);
 
-        Transports::create($request->all());
+        Transport::create($request->all());
 
         return redirect()->route('transports.index')->with('success', 'Data Transport Berhasil Disimpan!');
     }
@@ -60,8 +60,8 @@ class TransportsController extends Controller
      */
     public function edit(string $id): View
     {
-        $transport = Transports::findOrFail($id); // Get transport by ID or fail
-        $destinations = Destinations::all(); // Get all destinations for dropdown
+        $transport = Transport::findOrFail($id); // Get transport by ID or fail
+        $destinations = Destination::all(); // Get all destinations for dropdown
         return view('transports.edit', compact('transport', 'destinations'));
     }
 
@@ -81,7 +81,7 @@ class TransportsController extends Controller
             'destination_id' => 'required|exists:destinations,id',
         ]);
 
-        $transport = Transports::findOrFail($id); // Get transport by ID or fail
+        $transport = Transport::findOrFail($id); // Get transport by ID or fail
         $transport->update($request->all()); // Update transport
 
         return redirect()->route('transports.index')->with('success', 'Data Transport Berhasil Diubah!');
@@ -95,7 +95,7 @@ class TransportsController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
-        $transport = Transports::findOrFail($id); // Get transport by ID or fail
+        $transport = Transport::findOrFail($id); // Get transport by ID or fail
         $transport->delete(); // Delete transport
 
         return redirect()->route('transports.index')->with('success', 'Data Transport Berhasil Dihapus!');

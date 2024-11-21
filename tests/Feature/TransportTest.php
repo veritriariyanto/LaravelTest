@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Transports;
+use App\Models\Transport;
 
 
 class TransportTest extends TestCase
@@ -44,12 +44,12 @@ class TransportTest extends TestCase
             'biaya' => 500000,
         ]);
     }
-    public function test_data_transports_yang_ditampilkan_sesuai_data_tersimpan(): void
+    public function test_data_Transport_yang_ditampilkan_sesuai_data_tersimpan(): void
     {
         $this->actingAs($this->user);
 
         // Create a transport to ensure data is available
-        $transports = Transports::where('id', '!=', 25)->first();
+        $Transport = Transport::where('id', '!=', 25)->first();
 
         $response = $this->get(route('transports.index'));
 
@@ -59,45 +59,45 @@ class TransportTest extends TestCase
         $response->assertSeeText('bis');
         $response->assertSeeText('Rp 500.000');
     }
-    public function test_update_data_transports(): void
+    public function test_update_data_Transport(): void
     {
         $this->actingAs($this->user);
 
-        $transports = Transports::where('id', '!=', 25)->first();
+        $Transport = Transport::where('id', '!=', 25)->first();
 
         $updateData = [
             'nama_transport' => 'busKuning',
             'tipe_transport' => 'bis',
             'biaya' => 500000,
-            'destination_id' => $transports->destination_id,
+            'destination_id' => $Transport->destination_id,
         ];
 
 
-        $response = $this->put(route('transports.update', $transports->id), $updateData);
+        $response = $this->put(route('transports.update', $Transport->id), $updateData);
 
         $response->assertRedirect(route('transports.index'));
 
         $this->assertDatabaseHas('transports', [
-            'id' => $transports->id,
+            'id' => $Transport->id,
             'nama_transport' => 'busKuning',
             'tipe_transport' => 'bis',
             'biaya' => 500000,
         ]);
     }
-    public function test_hapus_data_transports(): void
+    public function test_hapus_data_Transport(): void
     {
         $this->actingAs($this->user);
-        $transports = Transports::where('id', '!=', 25)->first();
+        $Transport = Transport::where('id', '!=', 25)->first();
 
-        $deleteResponse = $this->delete(route('transports.destroy', $transports->id));
+        $deleteResponse = $this->delete(route('transports.destroy', $Transport->id));
         $deleteResponse->assertRedirect(route('transports.index'));
 
         // Ensure the transport no longer exists in the database
         $this->assertDatabaseMissing('transports', [
-            'id' => $transports->id,
+            'id' => $Transport->id,
         ]);
     }
-    public function test_menambahkan_data_baru_transports_dengan_isian_kosong(): void
+    public function test_menambahkan_data_baru_Transport_dengan_isian_kosong(): void
     {
         $this->actingAs($this->user);
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pakets;
-use App\Models\Destinations;
-use App\Models\Hotels;
-use App\Models\Transports;
+use App\Models\Paket;
+use App\Models\Destination;
+use App\Models\Hotel;
+use App\Models\Transport;
 use Illuminate\Http\Request;
 
 class PaketsController extends Controller
@@ -13,12 +13,12 @@ class PaketsController extends Controller
     public function index()
     {
         // Mengambil semua data paket dengan relasi untuk mengurangi query di view
-        $pakets = Pakets::with(['destination', 'hotel', 'transport'])->paginate(10);
+        $pakets = Paket::with(['destination', 'hotel', 'transport'])->paginate(10);
 
         // Menghitung total destinasi, hotel, dan transportasi
-        $totalHotels = Hotels::count();
-        $totalDestinations = Destinations::count();
-        $totalTransports = Transports::count();
+        $totalHotels = Hotel::count();
+        $totalDestinations = Destination::count();
+        $totalTransports = Transport::count();
 
         return view('pakets.index', compact('pakets', 'totalHotels', 'totalDestinations', 'totalTransports'));
     }
@@ -26,9 +26,9 @@ class PaketsController extends Controller
     public function create()
     {
         // Mengambil data untuk dropdown
-        $destinations = Destinations::all();
-        $hotels = Hotels::all();
-        $transports = Transports::all();
+        $destinations = Destination::all();
+        $hotels = Hotel::all();
+        $transports = Transport::all();
         return view('pakets.create', compact('destinations', 'hotels', 'transports'));
     }
 
@@ -48,20 +48,20 @@ class PaketsController extends Controller
         ]);
 
         // Membuat paket baru
-        Pakets::create($request->all());
+        Paket::create($request->all());
         return redirect()->route('pakets.index')->with('success', 'Paket created successfully.');
     }
 
-    public function edit(Pakets $paket)
+    public function edit(Paket $paket)
     {
         // Mengambil data untuk dropdown
-        $destinations = Destinations::all();
-        $hotels = Hotels::all();
-        $transports = Transports::all();
+        $destinations = Destination::all();
+        $hotels = Hotel::all();
+        $transports = Transport::all();
         return view('pakets.edit', compact('paket', 'destinations', 'hotels', 'transports'));
     }
 
-    public function update(Request $request, Pakets $paket)
+    public function update(Request $request, Paket $paket)
     {
         // Validasi data input
         $request->validate([
@@ -81,7 +81,7 @@ class PaketsController extends Controller
         return redirect()->route('pakets.index')->with('success', 'Paket updated successfully.');
     }
 
-    public function destroy(Pakets $paket)
+    public function destroy(Paket $paket)
     {
         // Menghapus paket
         $paket->delete();
