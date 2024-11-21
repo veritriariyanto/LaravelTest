@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 // Import model Destination
-use App\Models\Destinations;
+use App\Models\Destination;
 
 // Import return type View
 use Illuminate\View\View;
@@ -27,7 +27,7 @@ class DestinationsController extends Controller
     public function index(): View
     {
         // Ambil semua destinasi
-        $destinations = Destinations::latest()->paginate(10);
+        $destinations = Destination::latest()->paginate(10);
 
         // Render view dengan destinasi
         return view('destinations.index', compact('destinations'));
@@ -65,7 +65,7 @@ class DestinationsController extends Controller
         $image->storeAs('public/destinations/', $image->hashName());
 
         // Create destination
-        Destinations::create([
+        Destination::create([
             'image'         => $image->hashName(),
             'nama_destinasi' => $request->nama_destinasi,
             'deskripsi'     => $request->deskripsi,
@@ -86,7 +86,7 @@ class DestinationsController extends Controller
     public function edit(string $id): View
     {
         // Ambil destinasi berdasarkan ID
-        $destination = Destinations::findOrFail($id);
+        $destination = Destination::findOrFail($id);
 
         // Render view dengan destinasi
         return view('destinations.edit', compact('destination'));
@@ -111,7 +111,7 @@ class DestinationsController extends Controller
         ]);
 
         // Ambil destinasi berdasarkan ID
-        $destination = Destinations::findOrFail($id);
+        $destination = Destination::findOrFail($id);
 
         // Cek jika image diupload
         if ($request->hasFile('image')) {
@@ -153,7 +153,7 @@ class DestinationsController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         // Ambil destinasi berdasarkan ID
-        $destination = Destinations::findOrFail($id);
+        $destination = Destination::findOrFail($id);
 
         // Hapus image
         Storage::delete('public/destinations/' . $destination->image);
