@@ -3,7 +3,6 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Support\Facades\RateLimiter;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -34,7 +33,7 @@ class AuthenticationTest extends TestCase
 
         $this->post('/login', [
             'email' => $user->email,
-            'password' => 'Worngpassword',
+            'password' => 'Wrongpassword',
         ]);
 
         $this->assertGuest();
@@ -60,38 +59,4 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors(['email', 'password']);
         $this->assertGuest();
     }
-
-    // public function test_users_cannot_authenticate_with_inactive_account(): void
-    // {
-    //     $user = User::factory()->create(['is_active' => false]);
-
-    //     $response = $this->post('/login', [
-    //         'email' => $user->email,
-    //         'password' => 'password',
-    //     ]);
-
-    //     $this->assertGuest();
-    //     $response->assertSessionHas('error', 'Your account is not active.');
-    // }
-
-    // public function test_users_cannot_authenticate_with_brute_force_attempts(): void
-    // {
-    //     $user = User::factory()->create();
-    //     $email = $user->email;
-
-    //     RateLimiter::hit('login:' . $email, 5);
-
-    //     for ($i = 0; $i < 5; $i++) {
-    //         $this->post('/login', [
-    //             'email' => $email,
-    //             'password' => 'wrong-password',
-    //         ]);
-    //     }
-
-    //     $this->assertGuest();
-    //     $this->post('/login', [
-    //         'email' => $email,
-    //         'password' => 'wrong-password',
-    //     ])->assertStatus(429); // Terlalu banyak percobaan
-    // }
 }

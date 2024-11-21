@@ -137,14 +137,6 @@ class DestinationTest extends TestCase
 
         $response->assertNotFound(); // Expected a 404 response
     }
-    // public function test_hapus_data_yang_digunakan_oleh_fitur_lain(): void
-    // {
-    //     $this->actingAs($this->user);
-
-    //     $destination = Destinations::factory()->create([
-    //         'nama_destinasi' => 'Pantai Sanur',
-    //     ]);
-    // }
 
     public function test_operasi_crud_tanpa_hak_akses(): void
     {
